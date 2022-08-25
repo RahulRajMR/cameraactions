@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            touch-action: none;
+        }
+    </style>
+    <script src="./js/three.js"></script>
+    <script src="./js/FBXLoader.js"></script>
+    <script src="./js/fflate.js"></script>
+    <script src="./js/OrbitControls.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <nav class="menutermatru">
+        <ul class="mcd-menu">
+            <li>
+                <a href="">
+                    <i class="fa fa-home"></i>
+                    <strong>Guided tour path</strong>
+                    <small>Thermatru</small>
+                </a>
+            </li>
+            <li>
+                <a href="" class="active">
+                    <i class="fa fa-edit"></i>
+                    <strong>Explore</strong>
+                    <small>Thermatru</small>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="fa fa-gift"></i>
+                    <strong>Features</strong>
+                    <small>Thermatru</small>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="fa fa-globe"></i>
+                    <strong>Quick Access Menue</strong>
+                    <small>Thermatru</small>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="fa fa-comments-o"></i>
+                    <strong>Education Center</strong>
+                    <small>Thermatru</small>
+                </a>
+                <ul>
+                    <li><a href="#"><i class="fa fa-globe"></i>Mission</a></li>
+                    <li>
+                        <a href="#"><i class="fa fa-group"></i>Our Team</a>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-female"></i>structure</a></li>
+                            <li>
+                                <a href="#"><i class="fa fa-male"></i>view</a>
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-leaf"></i>About</a></li>
+                                    <li><a href="#"><i class="fa fa-tasks"></i>Skills</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#"><i class="fa fa-female"></i>objects</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-trophy"></i>Rewards</a></li>
+                    <li><a href="#"><i class="fa fa-certificate"></i>Certificates</a></li>
+                </ul>
+            </li>
+            <li>
+                <!-- <a href="">
+                    <i class="fa fa-picture-o"></i>
+                    <strong>Portfolio</strong>
+                    <small>Thermatru</small>
+                </a> -->
+            </li>
+            <li>
+                <a href="">
+                    <i class="fa fa-envelope-o"></i>
+                    <strong>Contacts</strong>
+                    <small>Thermatru</small>
+                </a>
+            </li>
+            <!-- <li class="float">
+                <a class="search">
+                    <input type="text" value="search ...">
+                    <button><i class="fa fa-search"></i></button>
+                </a>
+                <a href="" class="search-mobile">
+                    <i class="fa fa-search"></i>
+                </a>
+            </li> -->
+        </ul>
+    </nav>
+<script>
+    const width = window.innerWidth, height = window.innerHeight, hotMeshArr = [];
+    const raycaster = new THREE.Raycaster(), mouse = new THREE.Vector2();
+    const timeHouseMove = 50;
+    var renderer, scene, camera, house
+    var selHot, deltaHouse, timeHouse = -1, flagMove = false;
+
+
+    
+
+
+    create()
+    render()
+
+    function onClickWindow (e) {
+        if (flagMove) return;
+        const interHot = getClickObject(e);
+        if (interHot && interHot.object.name !== selHot) {
+            selHot = interHot.object.name;
+            const hotPos = interHot.object.position, housePos = house.position;
+            deltaHouse = {x:(housePos.x + hotPos.x)/-timeHouseMove, z:(housePos.z + hotPos.z)/-timeHouseMove};
+            flagMove = true; timeHouse = timeHouseMove;
+        }
+    }
+
+    function getClickObject (e) {
+        if (!hotMeshArr.length) return;
+		mouse.x = ( e.clientX / width ) * 2 - 1;
+		mouse.y = - ( e.clientY / height ) * 2 + 1;
+		raycaster.setFromCamera( mouse, camera );
+		return raycaster.intersectObjects( hotMeshArr )[0];
+    }
+
+    function create () {
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(width, height);
+        renderer.setClearColor(0xcce0ff, 1);
+        document.body.appendChild(renderer.domElement);
+
+        scene = new THREE.Scene();
+        house = new THREE.Group(); scene.add(house);
+
+        camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 10000);
+        camera.position.set(0, 0, -0.1)
+        camera.lookAt(scene.position);
+
+        const light = new THREE.AmbientLight(0xCCCCCC);
+        scene.add(light);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.maxPolarAngle = Math.PI/2.1; 
+        
+        createView();
+        
+       
+        document.addEventListener('click', onClickWindow);
+        var loader = new THREE.TextureLoader();
+		loader.load('img/test-circle-sample.png', function ( texture ) {
+			var geometry = new THREE.PlaneGeometry( 1, 1 );
+			var material = new THREE.MeshBasicMaterial( { map : texture, opacity : 1, side : THREE.DoubleSide, transparent : true } );
+			var sprite = new THREE.Mesh( geometry, material );
+			 sprite.position.set(4,-5.560,-9.460);
+			// sprite.rotate.set(0.170,0.240,-3.252)
+			 sprite.scale.set( -3.710, -2, 3 );
+
+			scene.add(sprite);
+		});
+    }
+
+   
+
+    function createView () {
+        var loader = new THREE.FBXLoader();
+        loader.load('./obj/good-life.fbx', function ( object ) {
+            console.log(object)
+            
+            object.children.forEach(child => {
+                if (child.name.includes('hotspot')) hotMeshArr.push(child);
+            });
+            object.name='good-life';
+            house.add( object );
+
+ 
+
+        } );
+    }
+
+    
+
+    function render() {
+        if (timeHouse >= 0) {
+            timeHouse--;
+            house.position.x += deltaHouse.x;
+            house.position.z += deltaHouse.z;
+            if (timeHouse===-1) flagMove = false;
+        }
+        renderer.render(scene, camera);
+        requestAnimationFrame(render)
+    }
+
+    var firescene = new THREE.Scene();
+</script>
+</body>
+</html>
