@@ -154,17 +154,17 @@
         
        
         document.addEventListener('click', onClickWindow);
-        var loader = new THREE.TextureLoader();
-		loader.load('img/test-circle-sample.png', function ( texture ) {
-			var geometry = new THREE.PlaneGeometry( 1, 1 );
-			var material = new THREE.MeshBasicMaterial( { map : texture, opacity : 1, side : THREE.DoubleSide, transparent : true } );
-			var sprite = new THREE.Mesh( geometry, material );
-			 sprite.position.set(4,-5.560,-9.460);
-			// sprite.rotate.set(0.170,0.240,-3.252)
-			 sprite.scale.set( -3.710, -2, 3 );
+        // var loader = new THREE.TextureLoader();
+		// loader.load('img/test-circle-sample.png', function ( texture ) {
+		// 	var geometry = new THREE.PlaneGeometry( 1, 1 );
+		// 	var material = new THREE.MeshBasicMaterial( { map : texture, opacity : 1, side : THREE.DoubleSide, transparent : true } );
+		// 	var sprite = new THREE.Mesh( geometry, material );
+		// 	 sprite.position.set(4,-5.560,-9.460);
+		// 	// sprite.rotate.set(0.170,0.240,-3.252)
+		// 	 sprite.scale.set( -3.710, -2, 3 );
 
-			scene.add(sprite);
-		});
+		// 	scene.add(sprite);
+		// });
     }
 
    
