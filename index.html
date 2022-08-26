@@ -104,7 +104,7 @@
     const timeHouseMove = 50;
     var renderer, scene, camera, house
     var selHot, deltaHouse, timeHouse = -1, flagMove = false;
-
+   
 
     
 
@@ -171,18 +171,57 @@
 
     function createView () {
         var loader = new THREE.FBXLoader();
-        loader.load('./obj/good-life.fbx', function ( object ) {
+        loader.load('./obj/concordia.fbx', function ( object ) {
             console.log(object)
             
             object.children.forEach(child => {
                 if (child.name.includes('hotspot')) hotMeshArr.push(child);
             });
-            object.name='good-life';
+            object.name='concordia';
             house.add( object );
 
  
 
         } );
+        //hotspot
+
+        const geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
+        const material = new THREE.MeshBasicMaterial( {color: '#ff3300'} );
+        const cylinder = new THREE.Mesh( geometry, material );
+        cylinder.position.set(9.820,-6.640,13.580)
+        cylinder.scale.set(0.240,0.000,0.240)
+        house.add( cylinder );
+ 
+        const geometry1 = new THREE.CylinderGeometry( 5, 5, 20, 32 );
+        const material1 = new THREE.MeshBasicMaterial( {color: '#ff3300'} );
+        const cylinder1 = new THREE.Mesh( geometry1, material1 );
+        cylinder1.position.set(16.860,-6.640,16.650)
+        cylinder1.scale.set(0.240,0.000,0.240)
+        house.add( cylinder1 );
+
+
+        const geometry2 = new THREE.CylinderGeometry( 5, 5, 20, 32 );
+        const material2 = new THREE.MeshBasicMaterial( {color: '#ff3300'} );
+        const cylinder2 = new THREE.Mesh( geometry2, material2 );
+        cylinder2.position.set(22.780,-4.910,27.030)
+        cylinder2.scale.set(0.320,0.010,0.300)
+        house.add( cylinder2 );
+
+        const geometry3 = new THREE.CylinderGeometry( 5, 5, 20, 32 );
+        const material3 = new THREE.MeshBasicMaterial( {color: '#ff3300'} );
+        const cylinder3 = new THREE.Mesh( geometry3, material3 );
+        cylinder3.position.set(-0.930,-3.570,27.890)
+        cylinder3.scale.set(0.280,0.010,0.300)
+        house.add( cylinder3 );
+
+        const geometry4 = new THREE.CylinderGeometry( 5, 5, 20, 32 );
+        const material4 = new THREE.MeshBasicMaterial( {color: '#ff0000'} );
+        const cylinder4 = new THREE.Mesh( geometry4, material4 );
+        cylinder4.position.set(2.850,-4.170,37.020)
+        cylinder4.scale.set(0.280,0.010,0.300)
+        house.add( cylinder4 );
+
+
     }
 
     
